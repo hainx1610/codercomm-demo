@@ -42,8 +42,9 @@ const setSession = (accessToken) => {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
   const login = async ({ email, password }, callback) => {
-    const response = await apiService.post("auth/login", { email, password });
+    const response = await apiService.post("/auth/login", { email, password });
     const { user, accessToken } = response.data;
 
     // save accessToken to apiService for future use after login
@@ -54,6 +55,19 @@ function AuthProvider({ children }) {
     });
     callback();
   };
+
+  //   const register = async ({ name, email, password }, callback) => {
+  //     const response = await apiService.post("auth/login", { name, email, password });
+  //     const { user, accessToken } = response.data;
+
+  //     // save accessToken to apiService for future use after login
+  //     setSession(accessToken);
+  //     dispatch({
+  //       type: LOGIN_SUCCESS,
+  //       payload: { user },
+  //     });
+  //     callback();
+  //   };
 
   return (
     <AuthContext.Provider value={{ ...state, login }}>
