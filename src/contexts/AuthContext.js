@@ -1,5 +1,6 @@
 import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
+import { isValidToken } from "../utils/jwt";
 
 const initialState = {
   isInitialized: false,
@@ -15,6 +16,15 @@ const UPDATE_PROFILE = "AUTH.UPDATE_PROFILE";
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case INITIALIZE:
+      const { isAuthenticated, user } = action.payload;
+      // destructuring is optional tho
+      return {
+        ...state,
+        isInitialized: true,
+        isAuthenticated,
+        user,
+      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -39,8 +49,6 @@ const reducer = (state, action) => {
   }
 };
 
-const AuthContext = createContext({ ...initialState });
-
 const setSession = (accessToken) => {
   if (accessToken) {
     window.localStorage.setItem("accessToken", accessToken);
@@ -52,8 +60,49 @@ const setSession = (accessToken) => {
   }
 };
 
+const AuthContext = createContext({ ...initialState });
+
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        // get accessToken from localStorage
+        const accessToken = window.localStorage.getItem("accessToken");
+        console.log("jaja " + accessToken);
+        if (accessToken && isValidToken(accessToken)) {
+          setSession(accessToken);
+
+          const response = await apiService.get("/users/me");
+          // api to get current user info
+          const user = response.data;
+
+          dispatch({
+            type: INITIALIZE,
+            payload: { isAuthenticated: true, user },
+            // user is authenticated, so change to true
+          });
+        } else {
+          setSession(null);
+          dispatch({
+            type: INITIALIZE,
+            payload: { isAuthenticated: false, user: null },
+            // user is not authenticated, navigate back to login page
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        setSession(null);
+        dispatch({
+          type: INITIALIZE,
+          payload: { isAuthenticated: false, user: null },
+          // user is not authenticated, navigate back to login page
+        });
+      }
+    };
+    initialize();
+  }, []);
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", { email, password });

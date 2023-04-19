@@ -49,7 +49,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    let from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/";
     let { email, password } = data;
 
     try {
@@ -79,7 +79,7 @@ function LoginPage() {
           <FTextField name={"email"} label={"Email address"} />
           <FTextField
             name={"password"}
-            label={"password"}
+            label={"Password"}
             type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (
