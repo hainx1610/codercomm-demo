@@ -70,13 +70,13 @@ function AuthProvider({ children }) {
       try {
         // get accessToken from localStorage
         const accessToken = window.localStorage.getItem("accessToken");
-        console.log("jaja " + accessToken);
+
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
           const response = await apiService.get("/users/me");
           // api to get current user info
-          const user = response.data;
+          const user = response.data.data;
 
           dispatch({
             type: INITIALIZE,
@@ -106,7 +106,7 @@ function AuthProvider({ children }) {
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", { email, password });
-    const { user, accessToken } = response.data;
+    const { user, accessToken } = response.data.data;
 
     // save accessToken to apiService for future use after login
     setSession(accessToken);
@@ -119,7 +119,7 @@ function AuthProvider({ children }) {
 
   const register = async ({ name, email, password }, callback) => {
     const response = await apiService.post("/users", { name, email, password });
-    const { user, accessToken } = response.data;
+    const { user, accessToken } = response.data.data;
 
     // save accessToken to apiService for future use after login
     setSession(accessToken);
