@@ -15,6 +15,7 @@ function PostList({ userId }) {
   // postsById is an obj
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (userId) dispatch(getPosts({ userId, page }));
     // no userId the first time
