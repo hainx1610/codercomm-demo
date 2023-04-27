@@ -3,11 +3,14 @@ import React from "react";
 
 import ThumbDownAltRoundedIcon from "@mui/icons-material/ThumbDownAltRounded";
 import ThumbUpRoundedIcon from "@mui/icons-material/ThumbUpRounded";
+import { useDispatch } from "react-redux";
+import { sendPostReaction } from "./postSlice";
 
 function PostReaction({ post }) {
+  const dispatch = useDispatch();
+
   const handleClick = (emoji) => {
-    console.log(emoji);
-    // temp
+    dispatch(sendPostReaction({ postId: post._id, emoji }));
   };
 
   return (
@@ -19,7 +22,7 @@ function PostReaction({ post }) {
         {post?.reactions?.like}
       </Typography>
       <IconButton onClick={() => handleClick("dislike")}>
-        <ThumbUpRoundedIcon sx={{ fontSize: 20, color: "error.main" }} />
+        <ThumbDownAltRoundedIcon sx={{ fontSize: 20, color: "error.main" }} />
       </IconButton>
       <Typography variant="h6" mr={1}>
         {post?.reactions?.dislike}
