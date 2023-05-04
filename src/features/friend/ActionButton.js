@@ -24,6 +24,7 @@ function ActionButton({ currentUserId, targetUserId, friendship, sx }) {
       Send Request
     </Button>
   );
+
   if (!friendship) return btnSendRequest;
 
   const btnUnfriend = (

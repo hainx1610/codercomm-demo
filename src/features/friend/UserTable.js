@@ -1,18 +1,18 @@
 import React from "react";
-import useAuth from "../../hooks/useAuth";
 import {
-  Avatar,
-  Box,
-  Link,
   Table,
+  TableHead,
+  Avatar,
+  TableRow,
   TableBody,
   TableCell,
+  Link,
   TableContainer,
-  TableHead,
-  TableRow,
+  Box,
 } from "@mui/material";
-
 import { Link as RouterLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+
 import FriendStatus from "./FriendStatus";
 import ActionButton from "./ActionButton";
 
@@ -20,9 +20,9 @@ function UserTable({ users }) {
   const { user } = useAuth();
   const currentUserId = user._id;
 
-  const getActionAndStatus = (targetUser) => {
+  const getActionsAndStatus = (targetUser) => {
     const props = {
-      currentUserId,
+      currentUserId: currentUserId,
       targetUserId: targetUser._id,
       friendship: targetUser.friendship,
     };
@@ -41,10 +41,10 @@ function UserTable({ users }) {
               <TableCell sx={{ width: { xs: "20%", sm: "25%" } }}>
                 Name
               </TableCell>
-              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+              <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
                 Email
               </TableCell>
-              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+              <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
                 Job Title
               </TableCell>
               <TableCell
@@ -57,8 +57,7 @@ function UserTable({ users }) {
           </TableHead>
           <TableBody>
             {users.map((user) => {
-              const { status, action } = getActionAndStatus(user);
-
+              const { status, action } = getActionsAndStatus(user);
               return (
                 <TableRow key={user._id} hover>
                   <TableCell
@@ -69,15 +68,15 @@ function UserTable({ users }) {
                     }}
                   >
                     <Avatar
-                      src={user.avatarUrl}
                       alt={user.name}
+                      src={user.avatarUrl}
                       sx={{ mr: 2 }}
                     />
                     <Link
                       variant="subtitle2"
+                      sx={{ fontWeight: 600 }}
                       component={RouterLink}
                       to={`/user/${user._id}`}
-                      sx={{ fontWeight: 600 }}
                     >
                       {user.name}
                     </Link>

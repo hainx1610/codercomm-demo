@@ -25,10 +25,6 @@ function AddFriend() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUsers({ filterName, page: page + 1, limit: rowsPerPage }));
-  }, [filterName, page, rowsPerPage, dispatch]);
-
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
@@ -40,6 +36,10 @@ function AddFriend() {
   };
 
   const handleSubmit = (searchQuery) => setFilterName(searchQuery);
+
+  useEffect(() => {
+    dispatch(getUsers({ filterName, page: page + 1, limit: rowsPerPage }));
+  }, [filterName, page, rowsPerPage, dispatch]);
 
   return (
     <Container>
