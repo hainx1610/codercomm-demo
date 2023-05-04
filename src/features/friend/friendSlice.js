@@ -30,6 +30,24 @@ const slice = createSlice({
       state.totalUsers = count;
       state.totalPages = totalPages;
     },
+    getFriendsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { users, count, totalPages } = action.payload;
+      users.forEach((user) => (state.usersById[user._id] = user));
+      state.currentPageUsers = users.map((user) => user._id);
+      state.totalUsers = count;
+      state.totalPages = totalPages;
+    },
+    getFriendRequestsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { users, count, totalPages } = action.payload;
+      users.forEach((user) => (state.usersById[user._id] = user));
+      state.currentPageUsers = users.map((user) => user._id);
+      state.totalUsers = count;
+      state.totalPages = totalPages;
+    },
     sendFriendRequestSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -81,6 +99,52 @@ export const getUsers =
         params,
       });
       dispatch(slice.actions.getUsersSuccess(response.data.data));
+      // response.xxx is the action.payload
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const getFriends =
+  ({ filterName, page = 1, limit = 12 }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const params = {
+        page,
+        limit,
+      };
+      if (filterName) {
+        params.name = filterName;
+      }
+      const response = await apiService.get(`/friends`, {
+        params,
+      });
+      dispatch(slice.actions.getFriendsSuccess(response.data.data));
+      // response.xxx is the action.payload
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const getFriendRequests =
+  ({ filterName, page = 1, limit = 12 }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const params = {
+        page,
+        limit,
+      };
+      if (filterName) {
+        params.name = filterName;
+      }
+      const response = await apiService.get(`/friends/requests/incoming`, {
+        params,
+      });
+      dispatch(slice.actions.getFriendRequestsSuccess(response.data.data));
       // response.xxx is the action.payload
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
