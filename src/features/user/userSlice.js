@@ -25,6 +25,11 @@ const slice = createSlice({
       state.error = null;
       state.selectedUser = action.payload;
     },
+    updateUserProfileSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.updatedProfile = action.payload;
+    },
   },
 });
 
@@ -38,5 +43,48 @@ export const getUser = (id) => async (dispatch) => {
     toast.error(error.message);
   }
 };
+
+export const updateUserProfile =
+  ({
+    userId,
+    name,
+    // avatarUrl,
+    coverUrl,
+    aboutMe,
+    city,
+    country,
+    company,
+    jobTitle,
+    // last 4 are for AccountSocialLinks
+    facebookLink,
+    instagramLink,
+    linkedinLink,
+    twitterLink,
+  }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const data = {
+        name,
+        coverUrl,
+        aboutMe,
+        city,
+        country,
+        company,
+        jobTitle,
+        // last 4 are for AccountSocialLinks
+        facebookLink,
+        instagramLink,
+        linkedinLink,
+        twitterLink,
+      };
+      const response = await apiService.put(`/users/${userId}`, data);
+      dispatch(slice.actions.updateUserProfileSuccess(response.data.data));
+      toast.success("Update Profile successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;
