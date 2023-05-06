@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
+import { cloudinaryUpload } from "../../utils/cloudinary";
 
 const initialState = {
   isLoading: false,
@@ -67,9 +68,11 @@ export const createPost =
 
     dispatch(slice.actions.startLoading());
     try {
+      const imageUrl = await cloudinaryUpload(image);
+      // upload to cloudinary, receive a string
       const response = await apiService.post("/posts", {
         content,
-        image,
+        image: imageUrl,
       });
       dispatch(slice.actions.createPostSuccess(response.data.data));
       // response.xxx is the action.payload
@@ -105,7 +108,7 @@ export const sendPostReaction =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.get(`/reactions`, {
+      const response = await apiService.post(`/reactions`, {
         targetType: "Post",
         targetId: postId,
         emoji,

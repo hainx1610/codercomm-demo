@@ -1,10 +1,11 @@
+// import React, { useRef } from "react";
+import React, { useCallback } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Card, Stack, alpha } from "@mui/material";
-import React from "react";
 import { useForm } from "react-hook-form";
 
 import * as Yup from "yup";
-import { FTextField, FormProvider } from "../../components/form";
+import { FTextField, FUploadImage, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "./postSlice";
@@ -28,16 +29,45 @@ function PostForm() {
   const {
     handleSubmit,
     reset,
-    setError,
+    setValue,
     formState: { isSubmitting },
   } = methods;
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.post);
 
+  // const fileInput = useRef();
+  // for upload pics (outdated)
+
   const onSubmit = (data) => {
+    // console.log(data);
     dispatch(createPost(data)).then(() => reset());
   };
+
+  // const handleFile = (e) => {
+  //   // console.log(fileInput.current.files[0]);
+  //   // React for uncontrolled components
+  //   const file = fileInput.current.files[0];
+  //   if (file) {
+  //     setValue("image", file);
+  //   }
+  // };
+
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        setValue(
+          "image",
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
 
   return (
     <Card sx={{ p: 3 }}>
@@ -56,7 +86,18 @@ function PostForm() {
               },
             }}
           />
-          <FTextField name={"image"} placeholder="Image" />
+          {/* <FTextField name={"image"} placeholder="Image (outdated anw)" /> */}
+
+          {/* <input type="file" ref={fileInput} onChange={handleFile} /> */}
+          {/* read-only according to React docs */}
+
+          <FUploadImage
+            name="image"
+            accept="image/*"
+            maxSize={3145728}
+            onDrop={handleDrop}
+          />
+
           <Box
             sx={{
               display: "flex",
