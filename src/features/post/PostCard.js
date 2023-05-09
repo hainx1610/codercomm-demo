@@ -4,17 +4,18 @@ import {
   Box,
   Card,
   CardHeader,
-  IconButton,
+  // IconButton,
   Link,
   Stack,
   Typography,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link as RouterLink } from "react-router-dom";
 import { fDate } from "../../utils/formatTime";
 import PostReaction from "./PostReaction";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
+import PostMore from "./PostMore";
 
 function PostCard({ post }) {
   return (
@@ -43,11 +44,7 @@ function PostCard({ post }) {
             {fDate(post.createdAt)}
           </Typography>
         }
-        action={
-          <IconButton>
-            <MoreVertIcon sx={{ fontSize: 30 }} />
-          </IconButton>
-        }
+        action={<PostMore post={post} />}
       />
 
       <Stack spacing={2} padding={3}>
