@@ -17,7 +17,7 @@ import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
 import PostMore from "./PostMore";
 
-function PostCard({ post }) {
+function PostCard({ post, handleEdit }) {
   return (
     <Card>
       <CardHeader
@@ -44,7 +44,7 @@ function PostCard({ post }) {
             {fDate(post.createdAt)}
           </Typography>
         }
-        action={<PostMore post={post} />}
+        action={<PostMore post={post} handleEdit={handleEdit} />}
       />
 
       <Stack spacing={2} padding={3}>

@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PostDeleteAlert from "./PostDeleteAlert";
 
-export default function PostMore({ post }) {
+export default function PostMore({ post, handleEdit }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -50,12 +50,19 @@ export default function PostMore({ post }) {
         <MenuItem
           onClick={() => {
             handleClose();
+            handleEdit();
+          }}
+        >
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
             setOpenAlert(true);
           }}
         >
           Delete
         </MenuItem>
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
       </Menu>
       <PostDeleteAlert
         openAlert={openAlert}

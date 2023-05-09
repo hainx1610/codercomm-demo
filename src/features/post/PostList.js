@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "./postSlice";
 import PostCard from "./PostCard";
 import { LoadingButton } from "@mui/lab";
-import { Box, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 
 function PostList({ userId }) {
+  const [postEdited, setPostEdited] = useState(null);
+
   const [page, setPage] = useState(1);
   const { currentPagePosts, postsById, totalPosts, isLoading } = useSelector(
     (state) => state.post
@@ -21,10 +23,20 @@ function PostList({ userId }) {
     // no userId the first time
   }, [dispatch, userId, page]);
 
+  const handleEditPost = (post) => {
+    setPostEdited(post);
+  };
+
   return (
     <>
       {posts.map((post) => (
-        <PostCard key={post._id} post={post} />
+        <PostCard
+          key={post._id}
+          post={post}
+          handleEdit={() => {
+            handleEditPost(post);
+          }}
+        />
       ))}
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         {totalPosts ? (
@@ -42,6 +54,10 @@ function PostList({ userId }) {
           <Typography variant="h6">No post yet</Typography>
         )}
       </Box>
+
+      <Modal open={!!postEdited} onClose={() => setPostEdited(null)}>
+        <Box>PostEditForm goes here</Box>
+      </Modal>
     </>
   );
 }
