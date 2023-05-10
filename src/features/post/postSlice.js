@@ -3,6 +3,7 @@ import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
 import { cloudinaryUpload } from "../../utils/cloudinary";
 import { toast } from "react-toastify";
+import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
@@ -66,6 +67,13 @@ const slice = createSlice({
         (postId) => postId !== action.payload
       );
       delete state.postsById[action.payload];
+    },
+    editPostSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { content, image } = action.payload;
+      state.postsById[action.payload._id].content = content;
+      state.postsById[action.payload._id].image = image;
     },
   },
 });
@@ -149,5 +157,24 @@ export const deletePost = (deletePostId) => async (dispatch) => {
     toast.error(error.message);
   }
 };
+
+export const editPost =
+  ({ content, image, _id }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const imageUrl = await cloudinaryUpload(image);
+      const response = await apiService.put(`/posts/${_id}`, {
+        content,
+        image: imageUrl,
+      });
+      console.log(response);
+      dispatch(slice.actions.editPostSuccess(response.data.data));
+      toast.success("Your post has been updated.");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;

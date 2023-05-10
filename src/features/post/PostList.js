@@ -4,6 +4,7 @@ import { getPosts } from "./postSlice";
 import PostCard from "./PostCard";
 import { LoadingButton } from "@mui/lab";
 import { Box, Modal, Typography } from "@mui/material";
+import PostEditForm from "./PostEditForm";
 
 function PostList({ userId }) {
   const [postEdited, setPostEdited] = useState(null);
@@ -56,7 +57,9 @@ function PostList({ userId }) {
       </Box>
 
       <Modal open={!!postEdited} onClose={() => setPostEdited(null)}>
-        <Box>PostEditForm goes here</Box>
+        <Box>
+          <PostEditForm post={postEdited} />
+        </Box>
       </Modal>
     </>
   );

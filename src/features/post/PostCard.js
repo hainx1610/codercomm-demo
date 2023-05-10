@@ -18,6 +18,7 @@ import CommentForm from "../comment/CommentForm";
 import PostMore from "./PostMore";
 
 function PostCard({ post, handleEdit }) {
+  console.log(post);
   return (
     <Card>
       <CardHeader
