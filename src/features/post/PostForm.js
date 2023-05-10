@@ -93,7 +93,7 @@ function PostForm() {
 
           <FUploadImage
             name="image"
-            accept="image/*"
+            accept={{ "image/*": [".jpeg", ".jpg", ".png"] }}
             maxSize={3145728}
             onDrop={handleDrop}
           />

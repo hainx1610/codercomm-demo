@@ -14,7 +14,7 @@ function FUploadImage({ name, ...other }) {
         const checkError = !!error && !field.value;
         return (
           <UploadSingleFile
-            accept="image/*"
+            accept={{ "image/*": [".jpeg", ".jpg", ".png"] }}
             file={field.value}
             error={checkError}
             helperText={
