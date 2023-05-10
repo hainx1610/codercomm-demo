@@ -56,8 +56,16 @@ function PostList({ userId }) {
         )}
       </Box>
 
-      <Modal open={!!postEdited} onClose={() => setPostEdited(null)}>
-        <Box>
+      <Modal
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        open={!!postEdited}
+        onClose={() => setPostEdited(null)}
+      >
+        <Box
+          sx={{
+            width: { xs: "80vw", md: 650 },
+          }}
+        >
           <PostEditForm post={postEdited} />
         </Box>
       </Modal>

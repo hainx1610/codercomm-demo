@@ -107,16 +107,22 @@ function PostEditForm({ post = defaultValues }) {
               justifyContent: "flex-end",
             }}
           >
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              size="small"
-              loading={isSubmitting || isLoading}
-            >
-              Update
-            </LoadingButton>
+            {isDirty ? (
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                size="small"
+                loading={isSubmitting || isLoading}
+              >
+                Update
+              </LoadingButton>
+            ) : (
+              <Button variant="contained" size="small" type="button" disabled>
+                Update
+              </Button>
+            )}
 
-            {isDirty && (
+            {/* {isDirty && (
               <Button
                 type="button"
                 onClick={() => reset()}
@@ -125,7 +131,7 @@ function PostEditForm({ post = defaultValues }) {
               >
                 Cancel
               </Button>
-            )}
+            )} */}
           </Box>
         </Stack>
       </FormProvider>
