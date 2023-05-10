@@ -3,7 +3,7 @@ import apiService from "../../app/apiService";
 import { POST_PER_PAGE } from "../../app/config";
 import { cloudinaryUpload } from "../../utils/cloudinary";
 import { toast } from "react-toastify";
-import { getCurrentUserProfile } from "../user/userSlice";
+// import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,

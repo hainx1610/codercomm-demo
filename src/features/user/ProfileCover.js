@@ -43,7 +43,6 @@ function ProfileCover({ profile }) {
     jobTitle,
     coverUrl,
     avatarUrl,
-    email,
     friendship,
   } = profile;
   // rename _id to targetUserId

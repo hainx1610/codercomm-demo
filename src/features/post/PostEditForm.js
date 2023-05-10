@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { FTextField, FUploadImage, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "./postSlice";
+// import { createPost } from "./postSlice";
 import { editPost } from "./postSlice";
 
 const yupSchema = Yup.object().shape({
